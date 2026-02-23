@@ -8,5 +8,3 @@ def splitData(x, y, test_size, random_state):
     y_train = y.drop(y_test.index)
 
     return x_train, y_train, x_test, y_test
-
-#def vectorize(x)
