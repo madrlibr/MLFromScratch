@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def LinearPlot(X, Y, weight, bias):
-    plt.figure(figsize=(6, 3))
+    plt.figure(figsize=(7, 4))
     yp = weight * X + bias
     plt.plot(X, yp, label=f'(weight={weight}, bias={bias})', color='red')
     plt.scatter(X, Y)
@@ -14,7 +14,7 @@ def LinearPlot(X, Y, weight, bias):
 
 def LogisticPlot(x, weight, bias):
     y = 1 / (1 + np.exp(-(weight * x + bias)))
-    plt.figure(figsize=(5, 3))
+    plt.figure(figsize=(7, 4))
     plt.plot(x, y, label=f'(weight={weight}, bias={bias})', color='blue', linewidth=2)
     plt.axhline(y=0.5, color='red', linestyle='--', alpha=0.5)
     plt.axvline(x=-bias/weight, color='green', linestyle='--', alpha=0.5, label='Decision Boundary')
