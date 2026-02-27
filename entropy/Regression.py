@@ -72,9 +72,9 @@ class LinearRegression:
         return self.P(self.weight, self.bias, X)
 
     def showFormula(self):
-        print("Model:")
+        print("Model: ")
         display(Math(f'f(x) = {self.weight:.4f} \cdot x + {self.bias:.4f}'))
-        print("Formulas:")
+        print("Formulas: ")
         display(Math(r'f(x) = w \cdot x + b'))
         display(Math(r'dw = \frac{2}{n} \sum_{i=1}^{n} (y_{pred} - y_i) \cdot x_i'))
         display(Math(r'db = \frac{2}{n} \sum_{i=1}^{n} (y_{pred} - y_i)'))
