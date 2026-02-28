@@ -26,8 +26,8 @@ class LogisticRegression:
 
             """if abs(lossB - lossN) < tol:
                 print(f"Convergen at iteration-{i}")
-                break""" #Not working properly so i comment this
-            
+                break""" #Not working properly yet
+             
             #lossB = lossN
             error = yPred - Y
             
@@ -37,11 +37,23 @@ class LogisticRegression:
             self.weight -= lr * dw
             self.bias -= lr * db
 
-    def predict(self, x):
-        P = self.P(za=self.weight * x + self.bias) 
-        return P
-
-
+    def predict(self, x, formula=False):
+        Z = self.weight * x + self.bias
+        P = self.P(Z)
+        if formula == True:
+            display(Math(f'z = {self.weight:.4} \cdot {x} + {self.bias:.4f} = {Z:.4f}'))
+            euler = 'e'
+            display(Math(f'P(z) = \\frac {{1}}{{1 + e^{{-z}}}} = {P:.4f}'))
+            return P
+        else:
+            return P
+            
+    def showFormula(self):
+        print("Logistic Regression:")
+        display(Math(f'model = {self.weight:.4f} \cdot x + {self.bias:.4f}'))
+        display(Math(r'z = w \cdot x + b'))
+        display(Math(r'P = \frac{1}{1 + e^{-z}}'))
+        
 class LinearRegression:
     def __init__(self):
         self.bias = 0
@@ -50,11 +62,11 @@ class LinearRegression:
     def train(self, x, y, epoch, lr):
         X = np.array(x).reshape(-1, 1)
         Y = np.array(x).reshape(-1, 1)
-        self.P = lambda w, b, x: (w * x) + b
+        self.P = lambda x: (self.weight * x) + self.bias
         n = len(X)
         
         for i in range(epoch):
-            yPred = self.P(self.weight, self.bias, X)
+            yPred = self.P(X)
             error = yPred - Y
             
             dw = (2/n) * np.sum(error * X)
@@ -64,9 +76,14 @@ class LinearRegression:
             self.bias -= lr * db
             mse = np.mean(error**2)
     
-    def predict(self, X):
-        return self.P(self.weight, self.bias, X)
-
+    def predict(self, X, formula=False):
+        ypred = self.P(X)
+        if formula:
+            display(Math(f'y({X}) = {self.weight:.4f} \cdot {X} + {self.bias:.4f} = {ypred:.4f}'))
+            return ypred
+        else:
+            return ypred
+    
     def showFormula(self):
         print("Model: ")
         display(Math(f'f(x) = {self.weight:.4f} \cdot x + {self.bias:.4f}'))
@@ -97,9 +114,13 @@ class LinearROLS:
         self.weight = ((n * sigmaXY) - (sigmaX * sigmaY)) / ((n * sigmaXS) - sigmaX ** 2)
         self.bias = (sigmaY - (self.weight * sigmaX)) / n 
 
-    def predict(self, X):
-        yp = self.bias + (self.weight * X)
-        return yp
+    def predict(self, X, formula=False):
+        ypred = self.weight * X + self.bias
+        if formula:
+            display(Math(f'y({X}) = {self.weight:.4f} \cdot {X} + {self.bias:.4f} = {ypred:.4f}'))
+            return ypred
+        else:
+            return ypred
 
     def showFormula(self):
         print("Linear Regression(OLS):")
