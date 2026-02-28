@@ -37,8 +37,6 @@ class LogisticRegression:
             self.weight -= lr * dw
             self.bias -= lr * db
 
-        return self.weight, self.bias
-
     def predict(self, x):
         P = self.P(za=self.weight * x + self.bias) 
         return P
@@ -65,8 +63,6 @@ class LinearRegression:
             self.weight -= lr * dw
             self.bias -= lr * db
             mse = np.mean(error**2)
-
-        return self.weight, self.bias
     
     def predict(self, X):
         return self.P(self.weight, self.bias, X)
@@ -78,4 +74,38 @@ class LinearRegression:
         display(Math(r'f(x) = w \cdot x + b'))
         display(Math(r'dw = \frac{2}{n} \sum_{i=1}^{n} (y_{pred} - y_i) \cdot x_i'))
         display(Math(r'db = \frac{2}{n} \sum_{i=1}^{n} (y_{pred} - y_i)'))
+
+
+class LinearROLS:
+    def __init__(self):
+        self.bias = 0
+        self.weight = 0
+
+    def train(self, x, y):
+        X = np.array(x).reshape(-1, 1)
+        Y = np.array(y).reshape(-1, 1)
         
+        xSquare = x ** 2
+        XY = X * Y
+        n = len(X)
+        
+        sigmaX = np.sum(X)
+        sigmaY = np.sum(Y)
+        sigmaXS = np.sum(xSquare)
+        sigmaXY = np.sum(XY)
+
+        self.weight = ((n * sigmaXY) - (sigmaX * sigmaY)) / ((n * sigmaXS) - sigmaX ** 2)
+        self.bias = (sigmaY - (self.weight * sigmaX)) / n 
+
+    def predict(self, X):
+        yp = self.bias + (self.weight * X)
+        return yp
+
+    def showFormula(self):
+        print("Linear Regression(OLS):")
+        display(Math(f'y = {self.weight:.4f} \cdot x + {self.bias:.4f}'))
+        print("\nyPredict Formula:")
+        display(Math(r'y = \beta_1 \cdot x + \beta_0'))
+        print("\nOLS: ")
+        display(Math(r'\beta_1 = \frac{n(\sum xy) - (\sum x)(\sum y)}{n(\sum x^2) - (\sum x)^2}'))        
+        display(Math(r'\beta_0 = \frac{\sum y - \beta_1(\sum x)}{n}'))
