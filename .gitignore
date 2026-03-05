@@ -1,3 +1,8 @@
 test.py
 .ipynb_checkpoints
 __pycache__
+regressionC.c
+build
+regressionC.cp313-win_amd64.pyd
+deleting.py
+benchmarking.ipynb
