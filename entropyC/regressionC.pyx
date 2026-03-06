@@ -6,6 +6,7 @@ cimport numpy as cnp
 @cython.wraparound(False)
 @cython.cdivision(True)
 
+
 cdef class LinearRegression:
     cdef public double bias
     cdef public double weight
@@ -34,6 +35,41 @@ cdef class LinearRegression:
             db = (2.0 / n) * errorSum
             self.weight -= lr * dw
             self.bias -= lr * db
+
+    def predict(self, double[:] X):
+        cdef int n = X.shape[0]
+        nparr = cnp.zeros(n, dtype=cnp.float64)
+        cdef double[:] yPred = nparr
+        cdef int i
+        for i in range(n):
+            yPred[i] = (self.weight * X[i]) + self.bias
+        return nparr
+
+    
+cdef class LinearROLS:
+    cdef public double weight
+    cdef public double bias
+    
+    def __init__(self):
+        self.bias = 0.0
+        self.weight = 0.0
+
+    def train(self, double[:, :] X, double[:, :] Y):
+        cdef double sigmaX, sigmaY, sigmaXS, sigmaXY
+        cdef int i, n
+        
+        n = X.shape[0]
+        m = X.shape[1]
+
+        for i in range(n):
+            for j in range(m):
+                sigmaXS += X[i, j] ** 2
+                sigmaX += X[i, j]
+                sigmaY += Y[i, j]
+                sigmaXY += X[i, j] * Y[i, 0]
+                    
+        self.weight = ((n * sigmaXY) - (sigmaX * sigmaY)) / ((n * sigmaXS) - sigmaX ** 2)
+        self.bias = (sigmaY - (self.weight * sigmaX)) / n 
 
     def predict(self, double[:] X):
         cdef int n = X.shape[0]
