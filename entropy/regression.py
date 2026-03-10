@@ -60,8 +60,6 @@ class LinearRegression:
         self.weight = 0
 
     def train(self, x, y, epoch, lr):
-        X = np.array(x).reshape(-1, 1)
-        Y = np.array(x).reshape(-1, 1)
         self.P = lambda x: (self.weight * x) + self.bias
         n = len(X)
         
